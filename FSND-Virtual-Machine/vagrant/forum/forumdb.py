@@ -1,6 +1,6 @@
 # "Database code" for the DB Forum.
 
-import psycopg2
+import psycopg2, bleach
 
 DBNAME = "forum"
 
@@ -17,6 +17,6 @@ def add_post(content):
   """Add a post to the 'database' with the current timestamp."""
   db = psycopg2.connect(database=DBNAME)
   c = db.cursor()
-  c.execute("insert into posts values ('%s')",(content,)) # Almost but not quite.
+  c.execute("insert into posts values (%s)", (bleach.clean(content),))  # good
   db.commit()
   db.close()
